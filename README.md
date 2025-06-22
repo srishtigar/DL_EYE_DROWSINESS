@@ -49,21 +49,22 @@ Eye_Drowsiness_Detection/
 from ultralytics import YOLO
 import cv2
 
-Load trained model
+- Load trained model
 model = YOLO("models/best.pt")
 
-Real-time detection
+- Real-time detection
 results = model.predict(frame, imgsz=640, conf=0.5)
 
-Process detections
+- Process detections
 for box, cls in zip(results.boxes.xyxy, results.boxes.cls):
 if model.names[int(cls)] == "closed_eye":
-# Trigger drowsiness alert
+
+- Trigger drowsiness alert
 closed_eye_counter += 1
 
 ## Getting Started
 
-### 📋 Prerequisites
+### Prerequisites
 - Python 3.8+
 - OpenCV
 - YOLO (Ultralytics)
@@ -97,11 +98,11 @@ streamlit run app.py
 
 ### Configuration Parameters
 
-YOLO Detection
+- YOLO Detection
 closed_eye_threshold = 15 # Consecutive frames
 confidence_threshold = 0.5 # Detection confidence
 
-Facial Landmarks
+- Facial Landmarks
 ear_threshold = 0.25 # Eye Aspect Ratio
 frame_check = 20 # Consecutive frames
 
