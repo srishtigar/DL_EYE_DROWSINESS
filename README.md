@@ -7,7 +7,7 @@ An advanced **real-time drowsiness detection system** using YOLO object detectio
 ## Features
 
 - **Dual Detection Methods**: YOLO-based eye state detection + dlib facial landmarks
-- ** Real-time Processing**: Live webcam monitoring with sub-second inference
+- **Real-time Processing**: Live webcam monitoring with sub-second inference
 - **Audio Alert System**: Pygame-powered alarm when drowsiness detected
 - **Web Interface**: Streamlit app for easy deployment
 - **High Accuracy**: 97% precision, 98.2% mAP50 on validation set
@@ -60,62 +60,6 @@ for box, cls in zip(results.boxes.xyxy, results.boxes.cls):
 if model.names[int(cls)] == "closed_eye":
 # Trigger drowsiness alert
 closed_eye_counter += 1
-
-
-### 👁️ Facial Landmark Method
-
-import dlib
-from scipy.spatial import distance
-
-def eye_aspect_ratio(eye):
-A = distance.euclidean(eye, eye)
-B = distance.euclidean(eye, eye)
-C = distance.euclidean(eye, eye)
-ear = (A + B) / (2.0 * C)
-return ear
-
-EAR threshold: 0.25
-Frame threshold: 20 consecutive frames
-
-
-### 🔊 Alert System
-
-from pygame import mixer
-
-mixer.init()
-mixer.music.load("music/music.wav")
-
-Trigger alert when drowsiness detected
-if closed_eye_counter >= threshold:
-mixer.music.play()
-cv2.putText(frame, "ALERT! Drowsiness Detected", ...)
-
-
----
-
-## 📊 Model Performance
-
-### Training Results (100 Epochs)
-| Metric | Score |
-|--------|-------|
-| **Precision** | 97.0% |
-| **Recall** | 97.5% |
-| **mAP50** | 98.2% |
-| **mAP50-95** | 76.0% |
-
-### Class-wise Performance
-| Class | Precision | Recall | mAP50 | mAP50-95 |
-|-------|-----------|--------|-------|----------|
-| **Closed Eye** | 100% | 95.0% | 99.5% | 75.7% |
-| **Open Eye** | 94.0% | 100% | 96.9% | 76.2% |
-
-### Inference Speed
-- **Preprocessing**: 9.2ms
-- **Inference**: 21.0ms  
-- **Postprocessing**: 5.2ms
-- **Total**: ~35ms per frame
-
----
 
 ## Getting Started
 
@@ -178,6 +122,37 @@ FRAME_WINDOW.image(processed_frame)
 
 
 ---
+### 👁️ Facial Landmark Method
+
+import dlib
+from scipy.spatial import distance
+
+def eye_aspect_ratio(eye):
+A = distance.euclidean(eye, eye)
+B = distance.euclidean(eye, eye)
+C = distance.euclidean(eye, eye)
+ear = (A + B) / (2.0 * C)
+return ear
+
+EAR threshold: 0.25
+Frame threshold: 20 consecutive frames
+
+
+### 🔊 Alert System
+
+from pygame import mixer
+
+mixer.init()
+mixer.music.load("music/music.wav")
+
+Trigger alert when drowsiness detected
+if closed_eye_counter >= threshold:
+mixer.music.play()
+cv2.putText(frame, "ALERT! Drowsiness Detected", ...)
+
+
+---
+
 
 ## Model Training
 
@@ -223,6 +198,29 @@ batch=16
 6. **Reset Counter**: Reset when eyes reopen
 
 ---
+
+## 📊 Model Performance
+
+### Training Results (100 Epochs)
+| Metric | Score |
+|--------|-------|
+| **Precision** | 97.0% |
+| **Recall** | 97.5% |
+| **mAP50** | 98.2% |
+| **mAP50-95** | 76.0% |
+
+### Class-wise Performance
+| Class | Precision | Recall | mAP50 | mAP50-95 |
+|-------|-----------|--------|-------|----------|
+| **Closed Eye** | 100% | 95.0% | 99.5% | 75.7% |
+| **Open Eye** | 94.0% | 100% | 96.9% | 76.2% |
+
+### Inference Speed
+- **Preprocessing**: 9.2ms
+- **Inference**: 21.0ms  
+- **Postprocessing**: 5.2ms
+- **Total**: ~35ms per frame
+
 
 ## 📈 Performance Optimization
 
